@@ -1,5 +1,7 @@
 *
 
+!venv
+!.idea
 !.gitignore
 !main.py
 !drum_test.py

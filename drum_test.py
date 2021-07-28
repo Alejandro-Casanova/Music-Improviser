@@ -20,17 +20,17 @@ drums.place_notes(Note("B", 1, None, 100, 9), 8)
 drums.place_notes(Note("F#", 2, None, 100, 9), 4)
 drums.place_notes(Note("F#", 2, None, 100, 9), 8)
 
-maracas = Note("A#", 5, None, 100, 9)
+shaker = Note("A#", 5, None, 100, 9)
 drums2 = Bar()
 drums2.place_notes(Note("B", 1, None, 127, 9), 8)
-drums2.place_notes(maracas, 4)
-drums2.place_notes(maracas, 8)
+drums2.place_notes(shaker, 4)
+drums2.place_notes(shaker, 8)
 drums2.place_notes(Note("B", 1, None, 127, 9), 8)
-drums2.place_notes(maracas, 4)
-drums2.place_notes(maracas, 8)
+drums2.place_notes(shaker, 4)
+drums2.place_notes(shaker, 8)
 
 while True:
-    fluidsynth.play_Bar(drums, 1, 60)
+    fluidsynth.play_Bar(drums2, 1, 60)
 while True:
     for i in range(1, 7):
         for j in range(12):

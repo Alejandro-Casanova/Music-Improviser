@@ -6,6 +6,8 @@ from mingus.midi import fluidsynth
 from random import randint, random, choice
 from mingus.containers.instrument import Instrument, Piano, Guitar
 
+CHORD_VOLUME = 65
+MELODY_VOLUME = 100
 
 def octave_down(chord_list):  # Receives 2D list ith chords and lowers them one octave down
     for i in range(len(chord_list)):
@@ -27,7 +29,7 @@ for i in prog:
     #prog2 = prog2 + [NoteContainer(i).notes]
     aux = []
     for j in range(len(i)):
-        aux.append(Note(i[j], 3, None, 65, 1))
+        aux.append(Note(i[j], 3, None, CHORD_VOLUME, 1))
     prog2 = prog2 + [aux]
 print(prog2)
 #octave_down(prog2)
@@ -51,9 +53,21 @@ while True:
 
     while not (improv.is_full()):  # Improvises melody
         if random() < 0.80:  # 80% chance of playing note
-            improv.place_notes(Note(notes[randint(0, 7)], 5, None, 100, 2), choice(just16))
+            improv.place_notes(Note(notes[randint(0, 7)], 5, None, MELODY_VOLUME, 2), choice(just16))
         else:  # 20% Chance of silence
             improv.place_notes(None, choice(just16))
+
+        # Background Percussion
+        if improv.is_full():
+            shaker = Note("A#", 5, None, 100, 9)
+            #improv = Bar()
+            improv.place_notes_at(Note("B", 1, None, 127, 9), 0.0)
+            improv.place_notes_at(shaker, 0.125)
+            improv.place_notes_at(shaker, 0.375)
+            improv.place_notes_at(Note("B", 1, None, 127, 9), 0.5)
+            improv.place_notes_at(shaker, 0.625)
+            improv.place_notes_at(shaker, 0.875)
+
     if random() < 0.3:  # 30% chance of duplicated melody
         midVal = len(improv.bar) // 2
         for i in range(midVal):
@@ -65,6 +79,7 @@ while True:
     fluidsynth.play_NoteContainer(currentChord, 1)
 
     fluidsynth.play_Bar(improv, 1, 60)
+    #fluidsynth.play_Bars([drums2, improv], [1, 9], 60)
     fluidsynth.stop_NoteContainer(currentChord, 1)
     if random() < 0.9:
         improv.empty()  # Resets melody 90% of the time
