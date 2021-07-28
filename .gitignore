@@ -2,6 +2,8 @@
 
 !.gitignore
 !main.py
+!drum_test.py
+!test.py
 !GeneralUserGSv1.471.sf2
 !README.md
 !LICENSE
