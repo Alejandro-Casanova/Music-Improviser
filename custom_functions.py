@@ -1,8 +1,8 @@
 import sys
 import time
 
-from mingus.core import scales, notes, meter, chords, progressions, keys
-from mingus.containers import Note, NoteContainer, Bar, Track
+from mingus.core import scales, notes, keys
+from mingus.containers import Note, Bar
 from mingus.midi import fluidsynth
 from random import randint, random, choice
 

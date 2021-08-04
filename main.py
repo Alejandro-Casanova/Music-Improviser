@@ -1,9 +1,5 @@
-import os
-import sys
-import time
-
-from mingus.core import scales, meter, chords, progressions, keys
-from mingus.containers import Note, NoteContainer, Bar, Track, instrument
+from mingus.core import progressions, keys
+from mingus.containers import Note, NoteContainer, Bar, instrument
 from mingus.midi import fluidsynth
 from random import randint, random, choice
 from custom_functions import custom_play_bars, format_chords, relative_modulation, parallel_modulation, \
@@ -24,18 +20,13 @@ fluidsynth.init("GeneralUserGSv1.471.sf2", "pulseaudio")
 key_play = 'C'
 minor_chords = ["Im", "IIdim", "III", "IVm", "Vm", "VI", "VII"]
 mayor_chords = ["I", "IIm", "IIIm", "IV", "V", "VIm", "VIIdim"]
-# prog = progressions.to_chords(["I", "V", "vi", "IV"], key_play)  # Sharp 2nd??
-# prog = progressions.to_chords(["I", "II", "III", "V", "vi", "IV"], key_play)  # Sharp 2nd??
-#prog_mayor = progressions.to_chords(mayor_chords, 'C')  # Sharp 2nd??
-#prog_minor = progressions.to_chords(minor_chords, 'c')  # Sharp 2nd??
-#prog_all = prog_mayor + prog_minor
 
 prog_play = progressions.to_chords([minor_chords, mayor_chords][is_mayor(key_play)], key_play)
 prog_play = format_chords(prog_play, CHORD_VOLUME, CHORD_CHANNEL)
-#prog_mayor = format_chords(prog_mayor, CHORD_VOLUME, CHORD_CHANNEL)
-#prog_minor = format_chords(prog_minor, CHORD_VOLUME, CHORD_CHANNEL)
-#prog_all = format_chords(prog_all, CHORD_VOLUME, CHORD_CHANNEL)
-#prog_play = prog_mayor
+# prog_mayor = format_chords(prog_mayor, CHORD_VOLUME, CHORD_CHANNEL)
+# prog_minor = format_chords(prog_minor, CHORD_VOLUME, CHORD_CHANNEL)
+# prog_all = format_chords(prog_all, CHORD_VOLUME, CHORD_CHANNEL)
+# prog_play = prog_mayor
 
 notes_play = keys.get_notes(key_play)
 
@@ -43,7 +34,7 @@ notes_play = keys.get_notes(key_play)
 improv = Bar(key_play, (4, 4))
 chords = Bar(key_play, (4, 4))
 
-# Defines lists with different types of subdivisions
+# Defines lists with different types of note durations
 validSubdivisions = [2, 4, 4 / 3, 8, 8 / 3, 16, 16 / 3, 32, 32 / 3]
 binarySubdivisions = [2, 4, 8, 16, 32]
 simpleSubdivisions = [4, 8, 16]
@@ -66,7 +57,7 @@ perc.place_notes(shaker, 8)
 
 while True:
     # Set Instruments
-    chord_choice = choice(chord_instruments)
+    chord_choice = randint(0, 127)
     melody_choice = randint(0, 127)
     fluidsynth.set_instrument(CHORD_CHANNEL, chord_choice)
     fluidsynth.set_instrument(MELODY_CHANNEL, melody_choice)
@@ -109,7 +100,7 @@ while True:
         improv.empty()  # Resets melody 90% of the time
 
     # Chance of changing keys
-    if random() < 0.15:  # 15% Chance
+    if random() < 0.2:  # 20% Chance
         dice = choice([*range(4)])
         if dice == 0:
             key_play = relative_modulation(key_play)
@@ -131,4 +122,3 @@ while True:
             improv.empty()
 
     chords.empty()
-
